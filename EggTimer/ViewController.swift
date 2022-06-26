@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     let cookTimes = [
@@ -15,13 +16,16 @@ class ViewController: UIViewController {
         "Hard": 12 * 60
     ]
     var cookSeconds: Int?;
-    @IBOutlet weak var timerView: UIView!
     var timer: Timer?
     var counter: Int?
-    @IBOutlet weak var timerDisplay: UILabel!
+    var player: AVAudioPlayer!
     
+    @IBOutlet weak var timerView: UIView!
+    @IBOutlet weak var timerDisplay: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var progressBar: UIProgressView!
+    
+    
     
     @IBAction func hardnessSelected(_ sender: UIButton) {
         cookSeconds = cookTimes[sender.currentTitle ?? "Medium"]
@@ -50,12 +54,18 @@ class ViewController: UIViewController {
                 self.timerDisplay.text = "Done"
                 self.timerLabel.text = ""
                 self.progressBar.progress = 1.0
+                self.playSound()
                 timer.invalidate()
                 
             }
         }
     }
         
+    func playSound() {
+        let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+        player = try! AVAudioPlayer(contentsOf: url!)
+        player.play()
+    }
                                     
     
 }
